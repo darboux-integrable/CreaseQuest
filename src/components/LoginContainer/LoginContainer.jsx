@@ -69,7 +69,7 @@ export default function LoginContainer() {
         isLoading: false,
         onClose: () => {
           naviagte("/home");
-        },
+        }
       });
 
       console.log(user);

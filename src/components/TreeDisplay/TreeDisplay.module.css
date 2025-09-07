@@ -1,0 +1,19 @@
+.treeDisplay{
+    position: relative;
+}
+
+.treeCanvas{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-bg-surface);
+
+}
+
+.nodesContainer{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 50%;
+    height: 100%;
+}

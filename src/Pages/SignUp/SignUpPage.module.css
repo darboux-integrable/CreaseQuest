@@ -34,7 +34,7 @@
     height: 35px;
     border-radius: 100px;
     width: 150px;
-    background-color: var(--color-accent1-hover);
+    background-color: var(--color-accent2-hover);
     border: none;
     color: var(--color-text-on-accent);
     position: relative;
@@ -55,8 +55,10 @@
     border-radius: 100px;
     height: 100%;
     z-index: -2;
-    background-color: rgba(0,0,0,0.2);
+    background-color: inherit;
+    opacity: 0.8;
 }
+
 
 .loginRedirect::after{
     content: '';

@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   auth,
   googleProvider,
-  updateUserActivitySession,
 } from "../../config/firebaseConfig.js";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { Input } from "../Input/Input.jsx";
@@ -37,7 +36,6 @@ export default function SignUpContainer() {
         hideProgressBar: false,
         isLoading: false,
         onClose: () => {
-          updateUserActivitySession();
           naviagte("/home");
         },
       });
@@ -73,7 +71,6 @@ export default function SignUpContainer() {
         autoClose: 1000,
         isLoading: false,
         onClose: () => {
-          updateUserActivitySession();
           naviagte("/home");
         },
       });
