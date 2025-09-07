@@ -1,0 +1,75 @@
+.pageContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.signUpContainerWrapper{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.loginTitle{
+    text-shadow: 8px 5px 10px rgba(0,0,0,0.2);
+}
+
+.loginContainer{
+    background-color: var(--color-accent1-bg);
+    color: var(--color-text-on-accent);
+    width: 400px;
+    display: flex;
+    position: relative;
+    left: -20px;
+    top: -20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: var(--card-border-radius);
+    flex-grow: 0 1;
+    box-shadow: var(--shadow-surface);
+}
+
+.loginRedirect{
+    height: 35px;
+    border-radius: 100px;
+    width: 150px;
+    background-color: var(--color-accent1-hover);
+    border: none;
+    color: var(--color-text-on-accent);
+    position: relative;
+    transition: all 150ms;
+    font-size: 1.2rem;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.loginRedirect::before{
+
+    content: '';
+    position: absolute;
+    top: calc(var(--border-width));
+    left: calc(var(--border-width));
+    padding: var(--border-width);
+    width: 100%;
+    border-radius: 100px;
+    height: 100%;
+    z-index: -2;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.loginRedirect::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: inherit;
+    border-radius: 100px;
+}
+
+.loginRedirect:hover{
+    scale: 1.02;
+}

@@ -1,0 +1,54 @@
+.container{
+    background-color: var(--color-bg-input);
+    height: 30px;
+    border: var(--border-width) transparent solid;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: var(--input-border-radius);
+    width: 100%;
+}
+
+.placeholder{
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    left: 10px;
+    transition: all 150ms;
+    padding-inline: 2px;
+    margin: 0;
+    font-size: 0.9rem;
+    background-image: linear-gradient(180deg, var(--color-bg-input), var(--color-bg-input));
+    background-repeat: no-repeat;
+    background-size: 100% 42%;
+    background-position-y: 100%;
+    color: var(--color-text-secondary);
+}
+
+.container:not(:focus-within) > .input[value=""] ~ .placeholder{
+    opacity: 1;
+}
+
+.container:not(:focus-within) > .input:not([value=""]) ~ .placeholder{
+    opacity: 0;
+}
+
+.container:focus-within > .placeholder{
+    top: -3px;
+    color: var(--color-accent1-bg);
+}
+
+.container:focus-within{
+    border-color: var(--color-accent1-bg);
+}
+
+.input{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-text-primary);
+}

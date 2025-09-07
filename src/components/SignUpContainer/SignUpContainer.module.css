@@ -1,0 +1,79 @@
+.container {
+  background-color: var(--color-bg-surface);
+  width: 400px;
+  height: 350px;
+  padding-inline: 20px;
+  padding-top: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--shadow-surface);
+}
+
+.title {
+  position: relative;
+  color: var(--color-text-primary);
+  margin-top: 0;
+  text-align: center;
+}
+
+.names {
+  display: flex;
+  gap: var(--flex-gap);
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap);
+}
+
+.signInContent {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.signupButton {
+  transition: all 250ms;
+  cursor: pointer;
+  border: 2px solid transparent;
+  color: var(--color-text-on-accent);
+  height: 30px;
+  background-color: var(--color-accent1-bg);
+  font-size: 1.1rem;
+  border-radius: var(--button-border-radius);
+}
+
+.signupButton:hover {
+  border-color: var(--color-accent1-hover);
+  color:  var(--color-accent1-light);
+  background-color: var(--color-accent1-bg);
+}
+
+.buttonIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.googleButton {
+  display: flex;
+  align-items: center;
+  gap: var(--flex-gap);
+  justify-content: center;
+  border-radius: var(--button-border-radius);
+  background-color: var(--color-bg-input);
+  /* border: var(--border-width) solid; */
+  height: 35px;
+  margin-bottom: 10px;
+  transition: 250ms all;
+  cursor: pointer;
+  color: var(--color-text-primary);
+}
+
+.googleButton:hover {
+  scale: 1.03;
+  border-color: var(--color-accent1-hover);
+}
