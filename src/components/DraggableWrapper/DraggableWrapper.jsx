@@ -6,17 +6,17 @@ export default function DraggableWrapper({ children }) {
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
 
   return (
-        <DndContext
-          onDragEnd={({ delta }) => {
-            setDragPosition((prev) => ({
-              x: prev.x + delta.x,
-              y: prev.y + delta.y,
-            }));
-          }}
-        >
-        <DraggableElement dragPosition={dragPosition}>
-            {children}
-        </DraggableElement>
-        </DndContext>
+    <DndContext
+      onDragEnd={({ delta }) => {
+        setDragPosition((prev) => ({
+          x: prev.x + delta.x,
+          y: prev.y + delta.y,
+        }));
+      }}
+    >
+      <DraggableElement dragPosition={dragPosition}>
+        {children}
+      </DraggableElement>
+    </DndContext>
   );
 }

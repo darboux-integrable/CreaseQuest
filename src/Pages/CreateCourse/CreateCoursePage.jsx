@@ -3,7 +3,6 @@ import HorizontalNavbar from "../../components/HorizontalNavbar/HorizontalNavbar
 import { useState, useEffect } from "react";
 import TreeDisplay from "../../components/TreeDisplay/TreeDisplay";
 import { Input } from "../../components/Input/Input";
-import DraggableWrapper from "../../components/DraggableWrapper/DraggableWrapper";
 
 export default function CreateCoursePage() {
   const [selectedNodeIndex, setSelectedNodeIndex] = useState();
@@ -12,7 +11,7 @@ export default function CreateCoursePage() {
     completedColor2: "#669bbc",
     uncompletedColor1: "hsl(0, 1%, 84%)",
     uncompletedColor2: "hsl(0, 1%, 70%)",
-    levels: [[0], [1, 2, 3], [4]],
+    levels: [[0], [1, 2, 3], [4, 5], [6], [7], [8], [9], [10], [11], [12], [13]],
     nodes: [
       {
         id: 0,
@@ -42,6 +41,60 @@ export default function CreateCoursePage() {
       {
         id: 4,
         parents: [2, 3],
+        completed: false,
+        icon: "trophy",
+      },
+       {
+        id: 5,
+        parents: [1,2],
+        completed: false,
+        icon: "trophy",
+      },
+            {
+        id: 6,
+        parents: [5, 4],
+        completed: false,
+        icon: "trophy",
+      },
+            {
+        id: 7,
+        parents: [6],
+        completed: false,
+        icon: "trophy",
+      },
+      {
+        id: 8,
+        parents: [7],
+        completed: false,
+        icon: "trophy",
+      },
+      {
+        id: 9,
+        parents: [8],
+        completed: false,
+        icon: "trophy",
+      },
+      {
+        id: 10,
+        parents: [9],
+        completed: false,
+        icon: "trophy",
+      },
+       {
+        id: 11,
+        parents: [10],
+        completed: false,
+        icon: "trophy",
+      },
+       {
+        id: 12,
+        parents: [11],
+        completed: false,
+        icon: "trophy",
+      },
+       {
+        id: 13,
+        parents: [12],
         completed: false,
         icon: "trophy",
       },

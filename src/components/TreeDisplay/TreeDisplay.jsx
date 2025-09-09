@@ -64,6 +64,7 @@ export default function TreeDisplay({
     // IDFK why that is. But it is. So subtract the height by the rate of
     // growth so the net growth is zero and the canvas does not move or grow
     canvas.height = canvasDimensions.height - 4;
+
     let ctx = canvas.getContext("2d");
 
     ctx.clearRect(-canvas.width / 2, canvas.width / 2, 0, canvas.heigth);
@@ -77,20 +78,30 @@ export default function TreeDisplay({
     generateNodes();
   }, [backgroundColor, iconColor]);
 
+  setTimeout(() => {generateNodes();}); // IDFK WHY I NEED THIS BUT I DO OR STUFF STOPS WORKING.
+
   return (
-      <div className={styles.treeDisplay}>
-        <DraggableWrapper>
-          <div
-            className={styles.dragContainer}
-          >
-            <canvas ref={canvasRef} className={styles.treeCanvas}></canvas>
-            <div className={styles.nodesContainer}>
-              {nodeElements.map((element) => {
-                return element;
-              })}
-            </div>
+    <div className={styles.treeDisplay}>
+      <DraggableWrapper>
+        <div className={styles.dragContainer}>
+          <canvas ref={canvasRef} className={styles.treeCanvas}></canvas>
+          <div className={styles.nodesContainer}>
+            {nodeElements.map((element) => {
+              return element;
+            })}
           </div>
-        </DraggableWrapper>
-      </div>
+          <div className={styles.heightContainer}>
+            {nodeElements.map((element) => {
+              return (
+                <div
+                  key={nodeElements.indexOf(element)}
+                  className={styles.heightBox}
+                ></div>
+              );
+            })}
+          </div>
+        </div>
+      </DraggableWrapper>
+    </div>
   );
 }

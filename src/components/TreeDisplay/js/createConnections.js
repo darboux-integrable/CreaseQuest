@@ -18,8 +18,8 @@ class Connection {
     gradient.addColorStop(1, this.color2);
 
     ctx.beginPath();
-    ctx.moveTo(lastPoint.x, lastPoint.y);
-    // Cosine interpolation as a parametric equation
+    ctx.moveTo(lastPoint.x, lastPoint.y - 5); // IDFK WHY I NEED THIS - 5 but otherwise there is a little overhang. 
+    // Cosine interpolation as a parametric equation 
     let t = 0;
     for (; t < 1; t += 0.01) {
       const x =

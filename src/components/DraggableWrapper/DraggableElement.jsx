@@ -1,5 +1,6 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import styles from "./DragElement.module.css";
 
 export default function DraggableElement({ children, dragPosition }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -14,7 +15,7 @@ export default function DraggableElement({ children, dragPosition }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div className={styles.dragWrapperElement} ref={setNodeRef} style={style} {...listeners} {...attributes}>
       {children}
     </div>
   );

@@ -1,7 +1,6 @@
 import styles from "./TreeNode.module.css";
 import TrophySVG from "../SVGS/TrophySVG/TrophySVG";
 import StarSVG from "../SVGS/StarSVG/StarSVG";
-import {useState, useEffect } from "react";
             
 export default function TreeNode({ onClickEvent, color1, color2, node }) {
 
