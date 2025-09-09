@@ -1,8 +1,10 @@
 import styles from "./TreeNode.module.css";
 import TrophySVG from "../SVGS/TrophySVG/TrophySVG";
 import StarSVG from "../SVGS/StarSVG/StarSVG";
+import {useState, useEffect } from "react";
+            
+export default function TreeNode({ onClickEvent, color1, color2, node }) {
 
-export default function TreeNode({ color1, color2, node }) {
   return (
     <div
       className={styles.treeNode}
@@ -11,9 +13,10 @@ export default function TreeNode({ color1, color2, node }) {
         width: `${node.width}px`,
         height: `${node.height}px`,
         top: `${node.positionY - node.height / 2}px`,
-        left: `${node.positionX - node.width / 2 + 7}px`, // Could not for money tell you why there is an offset of 7 pixels but there is.
+        left: `${node.positionX - node.width / 2}px`, 
         borderColor: color1  
     }}
+    onClick={() => {onClickEvent()}}
     >
       <div
         className={styles.nodeWrapper}

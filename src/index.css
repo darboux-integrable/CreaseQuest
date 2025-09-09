@@ -18,7 +18,7 @@
 :root[data-theme="light"] {
   /* ---------- Light Theme (navy + crimson) ---------- */
   /* Backgrounds */
-  --color-bg-page: #fafafa;
+  --color-bg-page: hsl(0, 0%, 96%);
   --color-bg-surface: #ffffff;
   --color-bg-input: #f4f4f5;
   --color-border-surface: #e5e7eb;

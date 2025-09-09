@@ -21,6 +21,5 @@ export const googleProvider = new GoogleAuthProvider();
 
 setPersistence(auth, browserSessionPersistence)
 .then(() => {
-  console.log("session set");
 
 });

@@ -72,7 +72,6 @@ export default function LoginContainer() {
         }
       });
 
-      console.log(user);
     } catch (err) {
       toast.update(toastId, {
         type: "error",

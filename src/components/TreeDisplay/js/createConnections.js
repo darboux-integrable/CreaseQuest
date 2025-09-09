@@ -39,10 +39,10 @@ class Connection {
   }
 }
 
-export default function createConnections(treeData) {
+export default function createConnections(treeData, color1, color2) {
   const nodes = treeData.nodes;
-  const completedColor1 = treeData.completedColor1;
-  const uncompletedColor1 = treeData.uncompletedColor1;
+  const completedColor1 = color1
+  const uncompletedColor1 = color2
   let connections = [];
 
   for (let i = 0; i < nodes.length; i++) {

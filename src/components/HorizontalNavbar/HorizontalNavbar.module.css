@@ -1,4 +1,5 @@
 .nav{
+    position: relative;
     background-color: var(--color-accent1-bg);
     width: 100%;
     display: flex;
