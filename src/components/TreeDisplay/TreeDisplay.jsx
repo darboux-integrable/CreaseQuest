@@ -4,7 +4,7 @@ import calculateNodePositions from "./js/nodePositions";
 import createConnections from "./js/createConnections";
 import TreeNode from "../TreeNode/TreeNode";
 import DraggableWrapper from "../DraggableWrapper/DraggableWrapper";
-
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 export default function TreeDisplay({
   treeData,
   setSelectedNode,
@@ -13,6 +13,7 @@ export default function TreeDisplay({
 }) {
   let canvasRef = useRef(null);
 
+  const [connections, setConnections] = useState([]);
   const [nodeElements, setNodeElements] = useState([]);
 
   const generateNodes = () => {
@@ -21,42 +22,44 @@ export default function TreeDisplay({
 
     calculateNodePositions(treeData, canvasRef.current.width);
 
+    // Create Node Elements
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
-      if (node.completed) {
-        nodeElementsTemp.push(
-          <TreeNode
-            key={i}
-            color1={backgroundColor}
-            color2={iconColor}
-            node={node}
-            onClickEvent={() => {
-              setSelectedNode(i);
-            }}
-          />
-        );
-      } else if (!node.completed) {
-        nodeElementsTemp.push(
-          <TreeNode
-            key={i}
-            color1={treeData.uncompletedColor1}
-            color2={treeData.uncompletedColor2}
-            node={node}
-            onClickEvent={() => {
-              setSelectedNode(i);
-            }}
-          />
-        );
-      }
+      const color1 = node.completed
+        ? backgroundColor
+        : treeData.uncompletedColor1;
+      const color2 = node.completed ? iconColor : treeData.uncompletedColor2;
+      nodeElementsTemp.push({
+        id: node.id,
+        element: (
+          <TreeNode key={i} color1={color1} color2={color2} node={node} />
+        ),
+        onClickEvent: () => {
+          setSelectedNode(node);
+        },
+      });
     }
     setNodeElements(nodeElementsTemp);
 
-    let connections = createConnections(
-      treeData,
-      backgroundColor,
-      treeData.uncompletedColor1
+    setConnections(
+      createConnections(treeData, backgroundColor, treeData.uncompletedColor1)
     );
+  };
 
+  useEffect(() => {
+    generateNodes();
+  }, [backgroundColor, iconColor]);
+
+  // Needed to reset the canvas position after all the node positions are calculated
+  // At least I think that is why. IDFK.
+  useEffect(() => {
+    setTimeout(() => {
+      generateNodes();
+    }); // IDFK WHY I NEED THIS BUT I DO OR STUFF STOPS WORKING.
+  }, []);
+
+  // Redraw the connections on the canvas
+  useEffect(() => {
     const canvas = canvasRef.current;
     const canvasDimensions = canvas.getBoundingClientRect();
     canvas.width = canvasDimensions.width;
@@ -72,24 +75,33 @@ export default function TreeDisplay({
     connections.forEach((connection) => {
       connection.draw(ctx);
     });
+
+  }, [connections]);
+
+  const recalculateConnections = (element, delta) => {
+    let index;
+
+    for (let i = 0; i < treeData.nodes.length; i++) {
+      if (treeData.nodes[i].id === element.id) {
+        index = i;
+      }
+    }
+
+
+    treeData.nodes[index].positionX = treeData.nodes[index].defaultX + delta.x;
+    treeData.nodes[index].positionY = treeData.nodes[index].defaultY + delta.y;
+
+    setConnections(
+      createConnections(treeData, backgroundColor, treeData.uncompletedColor1)
+    );
+
   };
-
-  useEffect(() => {
-    generateNodes();
-  }, [backgroundColor, iconColor]);
-
-  setTimeout(() => {generateNodes();}); // IDFK WHY I NEED THIS BUT I DO OR STUFF STOPS WORKING.
 
   return (
     <div className={styles.treeDisplay}>
-      <DraggableWrapper>
         <div className={styles.dragContainer}>
           <canvas ref={canvasRef} className={styles.treeCanvas}></canvas>
-          <div className={styles.nodesContainer}>
-            {nodeElements.map((element) => {
-              return element;
-            })}
-          </div>
+
           <div className={styles.heightContainer}>
             {nodeElements.map((element) => {
               return (
@@ -100,8 +112,31 @@ export default function TreeDisplay({
               );
             })}
           </div>
+          <div className={styles.nodesContainer}>
+            {nodeElements.map((element) => {
+              const id = nodeElements.indexOf(element) + "tree.display.node";
+              return (
+                <div key={id + ".container"}>
+                  <DraggableWrapper
+                    onDragStartEvent={() => {
+                      element.onClickEvent();
+                    }}
+                    onDragMoveEvent={(delta) => {
+                      recalculateConnections(element.element.props.node, delta);
+                    }}
+                    onDragEndEvent={(delta) => {
+                      element.element.props.node.defaultX += delta.x;
+                      element.element.props.node.defaultY += delta.y;
+                    }}
+                    id={id}
+                  >
+                    {element.element}
+                  </DraggableWrapper>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </DraggableWrapper>
     </div>
   );
 }

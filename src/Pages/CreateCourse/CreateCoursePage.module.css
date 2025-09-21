@@ -48,7 +48,7 @@
     -webkit-appearance: none;
     border: none;
     background-color: transparent;
-    border-radius: 50px;
+    border-radius: 20px;
 }
 .colorInput::-webkit-color-swatch-wrapper {
     padding: 0;

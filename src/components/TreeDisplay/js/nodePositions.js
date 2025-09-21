@@ -4,13 +4,13 @@
 // 2. sibling nodes have the same exact parents
 
 function arrayEquals(arr1, arr2) {
-  if (arr1.length != arr2.length) return false;
+  if (arr1.length !== arr2.length) return false;
 
   arr1.sort();
   arr2.sort();
 
   for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] != arr2[i]) return false;
+    if (arr1[i] !== arr2[i]) return false;
   }
 
   return true;
@@ -22,12 +22,14 @@ function arrayEquals(arr1, arr2) {
 // Its from my previous repo attempt at this project
 // The only thing it does differently now is calculate x and y positions seperately
 
-// THERE IS MORE DETAILED COMMENTS IN THE OLD REPO. 
-// but the basic idea is that it gets the sibling nodes and then places them nodes around 
+// THERE IS MORE DETAILED COMMENTS IN THE OLD REPO.
+// but the basic idea is that it gets the sibling nodes and then places them nodes around
 // based on the maximum distance of its parents nodes
 export default function calculateNodePositions(treeData, maxWidth) {
   const rootLevel = treeData.levels[0];
   const nodes = treeData.nodes;
+
+  console.log("running");
 
   let rootNodeGap = maxWidth / rootLevel.length;
   for (let i = 0; i < rootLevel.length; i++) {
@@ -89,6 +91,7 @@ export default function calculateNodePositions(treeData, maxWidth) {
         }
 
         node.positionX = x;
+        node.defaultX = x;
         node.positioned = true;
       }
     }
@@ -103,6 +106,8 @@ export default function calculateNodePositions(treeData, maxWidth) {
       const node = nodes[nodeId];
 
       node.positionY = (i + 1) * 75;
+      node.defaultY = node.positionY;
+
     }
   }
 }
