@@ -20,6 +20,34 @@
     margin: 0;
 }
 
+.checkbox:not(.checked):hover::before {
+  content: "";
+  position: absolute;
+  transform-origin: 50% 1.5px;
+  top: 50%;
+  left: 5%;
+  background-color: var(--color-accent2-bg);
+  height: 3px;
+  width: 90%;
+  transform: rotateZ(-45deg);
+  translate: 0 -50%;
+  opacity: 0.4;
+}
+.checkbox:not(.checked):hover::after {
+  content: "";
+  position: absolute;
+  transform-origin: 50% 1.5px;
+  top: 50%;
+  left: 5%;
+  background-color: var(--color-accent2-bg);
+  height: 3px;
+  width: 90%;
+  transform: rotateZ(45deg);
+  translate: 0 -50%;
+  opacity: 0.4;
+}
+
+
 .checked::before {
   content: "";
   position: absolute;
