@@ -24,10 +24,13 @@
     max-height: 100%;
     height: 100%;
     display: flex;
-    width: 100%;
+    width: 100% !important;
 }
 
 .nodeInfoDisplay{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     min-width: 250px;
     padding-inline: 10px;
     background-color: var(--color-bg-surface);
@@ -46,6 +49,7 @@
 
 .colorInput {
     -webkit-appearance: none;
+    appearance: none;
     border: none;
     background-color: transparent;
     border-radius: 20px;
@@ -55,4 +59,17 @@
 }
 .colorInput::-webkit-color-swatch {
     border: none;
+}
+
+.nodesContainer{
+    display: flex;
+    gap: 10px;
+}
+
+.nodeWrapper{
+    position: relative;
+}
+
+.nodesTitle{
+    margin: 0;
 }

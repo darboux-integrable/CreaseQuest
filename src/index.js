@@ -4,6 +4,6 @@ import "./index.css";
 import "@radix-ui/themes/styles.css";
 import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<div className="">
+root.render(
     <App />
-</div>);
+);

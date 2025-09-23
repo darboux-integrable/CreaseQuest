@@ -1,19 +1,14 @@
 import styles from "./TreeNode.module.css";
 import TrophySVG from "../SVGS/TrophySVG/TrophySVG";
 import StarSVG from "../SVGS/StarSVG/StarSVG";
-import DraggableWrapper from "../DraggableWrapper/DraggableWrapper";            
 
-export default function TreeNode({ color1, color2, node }) {
+export default function TreeNode({ color1, color2, icon = "star", completed=false}) {
 
   return (
     <div
       className={styles.treeNode}
       style={{
         backgroundColor: color1,
-        width: `${node.width}px`,
-        height: `${node.height}px`,
-        top: `${node.positionY - node.height / 2}px`,
-        left: `${node.positionX - node.width / 2}px`, 
         borderColor: color1,
         zIndex: 10
     }}
@@ -23,10 +18,10 @@ export default function TreeNode({ color1, color2, node }) {
           style={{ borderColor: color2, backgroundColor: color1 }}
         >
           {(function () {
-            if (node.icon === "star") {
-              return <StarSVG filled={node.completed} color={color2} size={35} />;
-            } else if (node.icon === "trophy") {
-              return <TrophySVG filled={node.completed} color={color2} size={35}/>;
+            if (icon === "star") {
+              return <StarSVG filled={completed} color={color2} size={35} />;
+            } else if (icon === "trophy") {
+              return <TrophySVG filled={completed} color={color2} size={35}/>;
             }
           })()}
         

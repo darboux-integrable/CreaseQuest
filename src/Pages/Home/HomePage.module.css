@@ -1,0 +1,25 @@
+.pageContainer{
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    padding: 10px;
+}
+
+.contentWrapper{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: blue;
+}
+
+.button{
+    background-color: var(--color-accent2-bg);
+    color: white;
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+}

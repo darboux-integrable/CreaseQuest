@@ -79,7 +79,10 @@
   --shadow-accent2: 0 0 12px rgba(30, 119, 109, 0.5);
 }
 
-
+html, body, #root{
+  position: relative;
+  height: 100%;
+}
 
 body {
   margin: 0;
@@ -88,6 +91,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
   background-color: var(--color-bg-page);
 }
 

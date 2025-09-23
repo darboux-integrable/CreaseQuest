@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { useState, useEffect } from "react";
 import LoginPage from "./Pages/Login/LoginPage";
 import CreateCoursePage from "./Pages/CreateCourse/CreateCoursePage";
-import { DndContext } from "@dnd-kit/core";
+import HomePage from "./Pages/Home/HomePage";
 
 function App() {
   const [theme, setTheme] = useState(
@@ -32,7 +32,8 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/CreateCourse" element={<CreateCoursePage />} />
+          <Route path="/users/home" element={<HomePage />} />
+          <Route path="/courses/create" element={<CreateCoursePage />} />
         </Routes>
       </Router>
       <ToastContainer theme={theme}></ToastContainer>
