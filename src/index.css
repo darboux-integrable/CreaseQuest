@@ -32,7 +32,7 @@
   /* Accent 1 (Navy) */
   --color-accent1-bg: #003049;
   --color-accent1-border: #001d29;
-  --color-accent1-hover: #002236;
+  --color-accent1-hover: hsl(202, 100%, 25%);
   --color-accent1-light: #e0e6eb;
 
   /* Accent 2 (Crimson) */

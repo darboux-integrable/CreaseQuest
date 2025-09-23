@@ -1,10 +1,10 @@
 /**
  * We dont talk about this page
- * Hell created it not me. 
+ * Hell created it not me.
  * Super messy IDFK what is happening
  * But it all works and that is what matters
- * 
- * 
+ *
+ *
  * TODO
  * CLEAN THIS BITCH
  */
@@ -19,6 +19,7 @@ import { CSS } from "@dnd-kit/utilities";
 import TreeNode from "../../components/TreeNode/TreeNode";
 import { DragOverlay } from "@dnd-kit/core";
 import InfiniteCanvas from "../../components/InfiniteCanvas/InfiniteCanvas";
+import Checkbox from "../../components/Checkbox/Checkbox";
 
 export default function CreateCoursePage() {
   const [treeData, setTreeData] = useState({
@@ -189,7 +190,7 @@ export default function CreateCoursePage() {
                 treeData={treeData}
                 iconColor={iconColor}
                 backgroundColor={backgroundColor}
-                allowedNodeMovement = {allowMovement}
+                allowedNodeMovement={allowMovement}
               />
             </InfiniteCanvas>
           </div>
@@ -287,7 +288,17 @@ function NodeInfoDisplay({
         </div>
       </div>
 
-      {selectedNode !== null && <h1>Selected Node {selectedNode.id}</h1>}
+      {selectedNode !== null && (
+        <div className={styles.selectedNodeContainer}>
+          <h1>Selected Node</h1>
+          <div className={styles.nodeCheckboxContainer}>
+            <Checkbox label="Tweak Positions"></Checkbox>
+          </div>
+          <div className={styles.nodeCheckboxContainer}>
+            <Checkbox label="Add Connections"></Checkbox>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
