@@ -1,9 +1,8 @@
-import styles from "./TreeDisplay.module.css";
-import { useRef, useEffect, useState } from "react";
+import styles from "./CreateTreeDisplay.module.css";
 import TreeNode from "../TreeNode/TreeNode";
 import { useDroppable, useDraggable } from "@dnd-kit/core";
 
-export default function TreeDisplay({
+export default function CreateTreeDisplay({
   treeData,
   setSelectedNode,
   iconColor,

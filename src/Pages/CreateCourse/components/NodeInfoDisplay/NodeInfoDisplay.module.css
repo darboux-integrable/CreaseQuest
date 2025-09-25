@@ -1,0 +1,54 @@
+
+.nodeInfoDisplay{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 250px;
+    padding-inline: 10px;
+    background-color: var(--color-bg-surface);
+}
+
+.generalColorInputs{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.inputWrapper{
+    display: flex;
+    gap: 10px;
+}
+
+.colorInput {
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    border-radius: 20px;
+}
+.colorInput::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.colorInput::-webkit-color-swatch {
+    border: none;
+}
+
+.nodesContainer{
+    display: flex;
+    gap: 10px;
+}
+
+.nodeWrapper{
+    position: relative;
+}
+
+.nodesTitle{
+    margin: 0;
+}
+
+.nodeCheckboxContainer{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}

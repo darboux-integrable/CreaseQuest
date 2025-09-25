@@ -11,15 +11,11 @@
 
 import styles from "./CreateCoursePage.module.css";
 import HorizontalNavbar from "../../components/HorizontalNavbar/HorizontalNavbar";
-import { useState, useEffect, useRef } from "react";
-import TreeDisplay from "../../components/TreeDisplay/TreeDisplay";
-import { Input } from "../../components/Input/Input";
-import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
-import TreeNode from "../../components/TreeNode/TreeNode";
-import { DragOverlay } from "@dnd-kit/core";
+import { useState } from "react";
+import CreateTreeDisplay from "../../components/CreateTreeDisplay/CreateTreeDisplay";
+import { DndContext } from "@dnd-kit/core";
 import InfiniteCanvas from "../../components/InfiniteCanvas/InfiniteCanvas";
-import Checkbox from "../../components/Checkbox/Checkbox";
+import NodeInfoDisplay from "./components/NodeInfoDisplay/NodeInfoDisplay";
 
 export default function CreateCoursePage() {
   const [treeData, setTreeData] = useState({
@@ -43,149 +39,157 @@ export default function CreateCoursePage() {
 
   const [allowMovement, setAllowMovement] = useState(true);
 
+  const onDragStart = (active) => {
+    // Create drag preview
+    if (active.id === "star" || active.id === "trophy") {
+      setDragIcon(active.id);
+      return;
+    }
+
+    // Select the node
+    if (active.id.includes("node:")) {
+      const nodeIndex = parseInt(active.id.split(":")[1]);
+
+      setSelectedNode(treeData.nodes[nodeIndex]);
+      setDragIcon(treeData.nodes[nodeIndex].icon);
+    }
+  };
+
+  const onDragEndEvent = (active, over) => {
+    if (over == null) return;
+
+    let newNode = {
+      x: null,
+      y: null,
+      parents: [],
+      id: treeData.numNodes,
+    };
+
+    // Create a new level and add a node
+    if (
+      over.id == "addLevel" &&
+      (active.id === "star" || active.id === "trophy")
+    ) {
+      newNode.atLevel = treeData.levels.length;
+      newNode.icon = active.id;
+      setTreeData({
+        ...treeData,
+        levels: [...treeData.levels, [newNode.id]],
+        nodes: [...treeData.nodes, newNode],
+        numNodes: treeData.numNodes + 1,
+      });
+
+      return;
+    }
+
+    // Add new node to a level
+    if (
+      over.id.includes("level:") &&
+      (active.id === "star" || active.id === "trophy")
+    ) {
+      let levelIndex = parseInt(over.id.split(":")[1]);
+
+      let temp = treeData.levels.map((level) => level);
+
+      newNode.atLevel = levelIndex;
+      newNode.icon = active.id;
+
+      temp[levelIndex].push(newNode.id);
+
+      setTreeData({
+        ...treeData,
+        levels: temp,
+        nodes: [...treeData.nodes, newNode],
+        numNodes: treeData.numNodes + 1,
+      });
+
+      return;
+    }
+
+    // Move a node from one level to another
+    if (active.id.includes("node:") && over.id.includes("level:")) {
+      let levelIndex = parseInt(over.id.split(":")[1]);
+      let nodeIndex = parseInt(active.id.split(":")[1]);
+
+      let node = treeData.nodes[nodeIndex];
+
+      if (node.atLevel === levelIndex) {
+        return;
+      }
+
+      let temp = treeData.levels.map((level) => level);
+
+      temp[node.atLevel].splice(temp[node.atLevel].indexOf(node.id), 1);
+      node.atLevel = levelIndex;
+      temp[levelIndex].push(node.id);
+
+      setTreeData({ ...treeData, levels: temp });
+
+      return;
+    }
+
+    // Move a node from a level to a newly created level
+    if (active.id.includes("node:") && over.id === "addLevel") {
+      let nodeIndex = parseInt(active.id.split(":")[1]);
+
+      const node = treeData.nodes[nodeIndex];
+
+      let temp = treeData.levels.map((level) => level);
+
+      temp[node.atLevel].splice(temp[node.atLevel].indexOf(nodeIndex), 1);
+      node.atLevel = temp.length;
+      temp.push([nodeIndex]);
+
+      setTreeData({ ...treeData, levels: temp });
+
+      return;
+    }
+
+    // Delete a node by moving it to the side bar.
+    if (active.id.includes("node:") && over.id === "treeDataSidebar") {
+      let nodeIndex = parseInt(active.id.split(":")[1]);
+      let node = treeData.nodes[nodeIndex];
+      let tempLevels = treeData.levels.map((level) => level);
+
+      tempLevels[node.atLevel].splice(
+        tempLevels[node.atLevel].indexOf(node.id),
+        1
+      );
+      let tempNodes = treeData.nodes.map((node) => node);
+
+      for (let i = nodeIndex + 1; i < tempNodes.length; i++) {
+        tempNodes[i].id -= 1;
+      }
+
+      tempNodes.splice(nodeIndex, 1);
+
+      setSelectedNode(null);
+
+      setTreeData({
+        ...treeData,
+        levels: tempLevels,
+        nodes: tempNodes,
+        numNodes: treeData.numNodes - 1,
+      });
+    }
+  };
+
   return (
     <div className={styles.pageContent}>
       <HorizontalNavbar></HorizontalNavbar>
 
       <DndContext
         onDragStart={({ active }) => {
-          // Create drag preview
-          if (active.id === "star" || active.id === "trophy") {
-            setDragIcon(active.id);
-            return;
-          }
-
-          // Select the node
-          if (active.id.includes("node:")) {
-            const nodeIndex = parseInt(active.id.split(":")[1]);
-
-            setSelectedNode(treeData.nodes[nodeIndex]);
-            setDragIcon(treeData.nodes[nodeIndex].icon);
-          }
+          onDragStart(active);
         }}
         onDragEnd={({ active, over }) => {
-          if (over == null) return;
-
-          let newNode = {
-            x: null,
-            y: null,
-            parents: [],
-            id: treeData.numNodes,
-          };
-
-          // Create a new level and add a node
-          if (
-            over.id == "addLevel" &&
-            (active.id === "star" || active.id === "trophy")
-          ) {
-            newNode.atLevel = treeData.levels.length;
-            newNode.icon = active.id;
-            setTreeData({
-              ...treeData,
-              levels: [...treeData.levels, [newNode.id]],
-              nodes: [...treeData.nodes, newNode],
-              numNodes: treeData.numNodes + 1,
-            });
-
-            return;
-          }
-
-          // Add new node to a level
-          if (
-            over.id.includes("level:") &&
-            (active.id === "star" || active.id === "trophy")
-          ) {
-            let levelIndex = parseInt(over.id.split(":")[1]);
-
-            let temp = treeData.levels.map((level) => level);
-
-            newNode.atLevel = levelIndex;
-            newNode.icon = active.id;
-
-            temp[levelIndex].push(newNode.id);
-
-            setTreeData({
-              ...treeData,
-              levels: temp,
-              nodes: [...treeData.nodes, newNode],
-              numNodes: treeData.numNodes + 1,
-            });
-
-            return;
-          }
-
-          // Move a node from one level to another
-          if (active.id.includes("node:") && over.id.includes("level:")) {
-            let levelIndex = parseInt(over.id.split(":")[1]);
-            let nodeIndex = parseInt(active.id.split(":")[1]);
-
-            let node = treeData.nodes[nodeIndex];
-
-            if (node.atLevel === levelIndex) {
-              return;
-            }
-
-            let temp = treeData.levels.map((level) => level);
-
-            temp[node.atLevel].splice(temp[node.atLevel].indexOf(node.id), 1);
-            node.atLevel = levelIndex;
-            temp[levelIndex].push(node.id);
-
-            setTreeData({ ...treeData, levels: temp });
-
-            return;
-          }
-
-          // Move a node from a level to a newly created level
-          if (active.id.includes("node:") && over.id === "addLevel") {
-            let nodeIndex = parseInt(active.id.split(":")[1]);
-
-            const node = treeData.nodes[nodeIndex];
-
-            let temp = treeData.levels.map((level) => level);
-
-            temp[node.atLevel].splice(temp[node.atLevel].indexOf(nodeIndex), 1);
-            node.atLevel = temp.length;
-            temp.push([nodeIndex]);
-
-            setTreeData({ ...treeData, levels: temp });
-
-            return;
-          }
-
-          // Delete a node by moving it to the side bar.
-          if (active.id.includes("node:") && over.id === "treeDataSidebar") {
-            let nodeIndex = parseInt(active.id.split(":")[1]);
-            let node = treeData.nodes[nodeIndex];
-            let tempLevels = treeData.levels.map((level) => level);
-
-            tempLevels[node.atLevel].splice(
-              tempLevels[node.atLevel].indexOf(node.id),
-              1
-            );
-            let tempNodes = treeData.nodes.map((node) => node);
-
-            for (let i = nodeIndex + 1; i < tempNodes.length; i++) {
-              tempNodes[i].id -= 1;
-            }
-
-            tempNodes.splice(nodeIndex, 1);
-
-            setSelectedNode(null);
-
-            setTreeData({
-              ...treeData,
-              levels: tempLevels,
-              nodes: tempNodes,
-              numNodes: treeData.numNodes - 1,
-            });
-          }
+          onDragEndEvent(active, over);
         }}
       >
         <div className={styles.creationToolContainer}>
           <div className={styles.treeDisplay}>
             <InfiniteCanvas>
-              <TreeDisplay
+              <CreateTreeDisplay
                 setSelectedNode={setSelectedNode}
                 treeData={treeData}
                 iconColor={iconColor}
@@ -209,119 +213,3 @@ export default function CreateCoursePage() {
   );
 }
 
-function NodeInfoDisplay({
-  iconColor,
-  setIconColor,
-  backgroundColor,
-  setBackgroundColor,
-  setDragIcon,
-  selectedNode,
-  dragIcon,
-}) {
-  const { setNodeRef } = useDroppable({ id: "treeDataSidebar" });
-
-  return (
-    <div className={styles.nodeInfoDisplay} ref={setNodeRef}>
-      <div>
-        <h1 className={styles.generalTitle}>Gerenal</h1>
-        <div className={styles.generalColorInputs}>
-          <div className={styles.inputWrapper}>
-            <input
-              value={backgroundColor}
-              onChange={(e) => {
-                setBackgroundColor(e.target.value);
-              }}
-              className={styles.colorInput}
-              type="color"
-              name="Background color wrapper"
-            />
-            <Input
-              value={backgroundColor}
-              setValue={setBackgroundColor}
-              placeholder="Background Color #Hex"
-            ></Input>
-          </div>
-          <div className={styles.inputWrapper}>
-            <input
-              value={iconColor}
-              onChange={(e) => {
-                setIconColor(e.target.value);
-              }}
-              className={styles.colorInput}
-              type="color"
-              name="Icon color wrapper"
-            />
-            <Input
-              value={iconColor}
-              setValue={setIconColor}
-              placeholder="Icon Color #Hex"
-            ></Input>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h1 className={styles.nodesTitle}>Quest Nodes</h1>
-        <div className={styles.nodesContainer}>
-          <TreeNodeButton
-            backgroundColor={backgroundColor}
-            iconColor={iconColor}
-            icon={"star"}
-            setDragIcon={setDragIcon}
-          ></TreeNodeButton>
-          <TreeNodeButton
-            backgroundColor={backgroundColor}
-            iconColor={iconColor}
-            icon={"trophy"}
-            setDragIcon={setDragIcon}
-          ></TreeNodeButton>
-
-          <DragOverlay>
-            <div style={{ opacity: 0.5 }}>
-              <TreeNodeButton
-                backgroundColor={backgroundColor}
-                iconColor={iconColor}
-                icon={dragIcon}
-                setDragIcon={setDragIcon}
-              ></TreeNodeButton>
-            </div>
-          </DragOverlay>
-        </div>
-      </div>
-
-      {selectedNode !== null && (
-        <div className={styles.selectedNodeContainer}>
-          <h1>Selected Node</h1>
-          <div className={styles.nodeCheckboxContainer}>
-            <Checkbox label="Tweak Positions"></Checkbox>
-          </div>
-          <div className={styles.nodeCheckboxContainer}>
-            <Checkbox label="Add Connections"></Checkbox>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function TreeNodeButton({ backgroundColor, iconColor, icon }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: icon,
-  });
-
-  const style = {};
-
-  return (
-    <div {...attributes} {...listeners} ref={setNodeRef} style={style}>
-      <div>
-        <TreeNode
-          color1={backgroundColor}
-          color2={iconColor}
-          icon={icon}
-          completed={true}
-        >
-          {" "}
-        </TreeNode>
-      </div>
-    </div>
-  );
-}
