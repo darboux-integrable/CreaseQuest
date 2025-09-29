@@ -12,6 +12,7 @@ export default function NodeInfoDisplay({
   setDragIcon,
   selectedNode,
   dragIcon,
+  setAllowMovement,
 }) {
   const { setNodeRef } = useDroppable({ id: "treeDataSidebar" });
 
@@ -57,18 +58,36 @@ export default function NodeInfoDisplay({
       <div>
         <h1 className={styles.nodesTitle}>Quest Nodes</h1>
         <div className={styles.nodesContainer}>
-          <TreeNodeButton
-            backgroundColor={backgroundColor}
-            iconColor={iconColor}
-            icon={"star"}
-            setDragIcon={setDragIcon}
-          ></TreeNodeButton>
-          <TreeNodeButton
-            backgroundColor={backgroundColor}
-            iconColor={iconColor}
-            icon={"trophy"}
-            setDragIcon={setDragIcon}
-          ></TreeNodeButton>
+          <div className={styles.moveableNodeButtons}>
+            <TreeNodeButton
+              backgroundColor={backgroundColor}
+              iconColor={iconColor}
+              icon={"star"}
+              setDragIcon={setDragIcon}
+            ></TreeNodeButton>
+            <TreeNodeButton
+              backgroundColor={backgroundColor}
+              iconColor={iconColor}
+              icon={"trophy"}
+              setDragIcon={setDragIcon}
+            ></TreeNodeButton>
+          </div>
+          <div className="">
+            <div className={styles.nodeCheckboxContainer}>
+              <Checkbox
+                onCheck={() => {
+                  setAllowMovement(false);
+                }}
+                onUncheck={() => {
+                  setAllowMovement(true);
+                }}
+                label="Tweak Horizontal Positions"
+              ></Checkbox>
+            </div>
+            <div className={styles.nodeCheckboxContainer}>
+              <Checkbox label="Add Connections"></Checkbox>
+            </div>
+          </div>
 
           <DragOverlay>
             <div style={{ opacity: 0.5 }}>
@@ -86,12 +105,6 @@ export default function NodeInfoDisplay({
       {selectedNode !== null && (
         <div className={styles.selectedNodeContainer}>
           <h1>Selected Node</h1>
-          <div className={styles.nodeCheckboxContainer}>
-            <Checkbox label="Tweak Positions"></Checkbox>
-          </div>
-          <div className={styles.nodeCheckboxContainer}>
-            <Checkbox label="Add Connections"></Checkbox>
-          </div>
         </div>
       )}
     </div>

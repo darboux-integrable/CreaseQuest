@@ -35,6 +35,12 @@
 
 .nodesContainer{
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.moveableNodeButtons{
+    display: flex;
     gap: 10px;
 }
 

@@ -11,7 +11,7 @@
 
 import styles from "./CreateCoursePage.module.css";
 import HorizontalNavbar from "../../components/HorizontalNavbar/HorizontalNavbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateTreeDisplay from "../../components/CreateTreeDisplay/CreateTreeDisplay";
 import { DndContext } from "@dnd-kit/core";
 import InfiniteCanvas from "../../components/InfiniteCanvas/InfiniteCanvas";
@@ -61,6 +61,8 @@ export default function CreateCoursePage() {
     let newNode = {
       x: null,
       y: null,
+      xOffset: 0,
+      yOffset: 0,
       parents: [],
       id: treeData.numNodes,
     };
@@ -111,9 +113,13 @@ export default function CreateCoursePage() {
       let levelIndex = parseInt(over.id.split(":")[1]);
       let nodeIndex = parseInt(active.id.split(":")[1]);
 
-      let node = treeData.nodes[nodeIndex];
+      let tempNodes = treeData.nodes.map((node) => node);
+      let node = tempNodes[nodeIndex];
+      node.xOffset = 0;
+      node.yOffset = 0;
 
       if (node.atLevel === levelIndex) {
+        setTreeData({ ...treeData, nodes: tempNodes });
         return;
       }
 
@@ -123,7 +129,7 @@ export default function CreateCoursePage() {
       node.atLevel = levelIndex;
       temp[levelIndex].push(node.id);
 
-      setTreeData({ ...treeData, levels: temp });
+      setTreeData({ ...treeData, levels: temp, nodes: tempNodes });
 
       return;
     }
@@ -132,7 +138,11 @@ export default function CreateCoursePage() {
     if (active.id.includes("node:") && over.id === "addLevel") {
       let nodeIndex = parseInt(active.id.split(":")[1]);
 
-      const node = treeData.nodes[nodeIndex];
+      const tempNodes = treeData.nodes.map(node => node);
+      let node = tempNodes[nodeIndex];
+
+      node.xOffset = 0;
+      node.yOffset = 0;
 
       let temp = treeData.levels.map((level) => level);
 
@@ -140,7 +150,7 @@ export default function CreateCoursePage() {
       node.atLevel = temp.length;
       temp.push([nodeIndex]);
 
-      setTreeData({ ...treeData, levels: temp });
+      setTreeData({ ...treeData, levels: temp, nodes: tempNodes });
 
       return;
     }
@@ -174,6 +184,10 @@ export default function CreateCoursePage() {
     }
   };
 
+  useEffect(() => {
+    console.log(treeData);
+  }, [treeData]);
+
   return (
     <div className={styles.pageContent}>
       <HorizontalNavbar></HorizontalNavbar>
@@ -192,6 +206,7 @@ export default function CreateCoursePage() {
               <CreateTreeDisplay
                 setSelectedNode={setSelectedNode}
                 treeData={treeData}
+                setTreeData={setTreeData}
                 iconColor={iconColor}
                 backgroundColor={backgroundColor}
                 allowedNodeMovement={allowMovement}
@@ -206,10 +221,10 @@ export default function CreateCoursePage() {
             setDragIcon={setDragIcon}
             selectedNode={selectedNode}
             dragIcon={dragIcon}
+            setAllowMovement={setAllowMovement}
           ></NodeInfoDisplay>
         </div>
       </DndContext>
     </div>
   );
 }
-
